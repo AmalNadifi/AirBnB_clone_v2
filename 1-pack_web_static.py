@@ -14,8 +14,8 @@ def do_pack():
     Returns:
         Archive path (success) or None (failure)
     """
+    timestamp = strftime("%Y%m%d%H%M%S")
     try:
-        timestamp = strftime("%Y%m%d%H%M%S")
         local("mkdir -p versions")
         local("tar -czvf {} versions/web_static_{}.tgz web_static/"
               .format(timestamp))
