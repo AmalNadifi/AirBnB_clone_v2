@@ -15,13 +15,12 @@ def do_pack():
         Archive path (success) or None (failure)
     """
     try:
-        current_time = datetime.now()
-        timestamp = current_time.strftime("%Y%m%d%H%M%S")
-        archive_path = "versions/web_static_{}.tgz".format(timestamp)
-
+        timestamp = strftime("%Y%m%d%H%M%S")
         local("mkdir -p versions")
-        local("tar -czvf {} web_static".format(archive_path))
+        local("tar -czvf {} versions/web_static_{}.tgz web_static/"
+              .format(timestamp))
 
-        return archive_path
+        return "versions/web_static_{}.tgz".format(timestamp)
+
     except Exception as e:
         return None
