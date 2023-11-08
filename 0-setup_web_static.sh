@@ -25,12 +25,6 @@ sudo ln -sf /data/web_static/releases/test /data/web_static/current
 # Giving the ownership to the ubuntu user and group recursively
 sudo chown -R ubuntu:ubuntu /data/
 # Updating the nginx configuration
-config_file="/etc/nginx/sites-available/default"
-config_str="location /hbnb_static {\n    alias /data/web_static/current/;\n}\n"
-if grep -q "location /hbnb_static" "$config_file"; then
-  sudo sed -i "s|location /hbnb_static {.*}|$config_str|g" "$config_file"
-else
-  sudo sed -i "/location /i $config_str" "$config_file"
-fi
+sudo sed -i '/listen 80 default_server/a location /hbnb_static { alias /data/web_static/current/;}' /etc/nginx/sites-enabled/default
 # Restarting Nginx
 sudo service nginx restart
