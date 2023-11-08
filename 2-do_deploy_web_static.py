@@ -20,6 +20,7 @@ env.hosts = [web_server_1_IP, web_server_2_IP]
 env.user = ssh_username
 env.key_filename = path_to_private_key
 
+
 def do_deploy(archive_path):
     """The following function distributes an archive to web servers"""
 
