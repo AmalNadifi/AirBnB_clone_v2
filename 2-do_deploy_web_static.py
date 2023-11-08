@@ -29,36 +29,38 @@ def do_deploy(archive_path):
 
     try:
         # Extracting the filename and path
-        tgzfile = archive_path.split("/")[-1]
-        filename = tgzfile.split(".")[0]
-        pathname = "/data/web_static/releases/" + filename
+        tgz_file = archive_path.split("/")[-1]
+        print(tgz_file)
+        file_name = tgz_file.split(".")[0]
+        print(file_name)
+        path_name = "/data/web_static/releases/" + file_name
 
         # Uploading the archive to the /tmp/ dir on the web servers
         put(archive_path, '/tmp/')
 
         # Creating the release directory
-        run("mkdir -p /data/web_static/releases/{}/".format(filename))
+        run("mkdir -p /data/web_static/releases/{}/".format(file_name))
 
         # Uncompressing the archive into the release directory
         run("tar -zxvf /tmp/{} -C /data/web_static/releases/{}/"
-            .format(tgzfile, filename))
+            .format(tgz_file, file_name))
 
         # Removing the uploaded archive from the /tmp/ directory
-        run("rm /tmp/{}".format(tgzfile))
+        run("rm /tmp/{}".format(tgz_file))
 
         # Moving the contents from the web_static subdir to the release dir
         run("mv /data/web_static/releases/{}/web_static/*\
-            /data/web_static/releases/{}/".format(filename, filename))
+            /data/web_static/releases/{}/".format(file_name, file_name))
 
         # Removing the now empty web_static/ subdir in the release dir
-        run("rm -rf /data/web_static/releases/{}/web_static".format(filename))
+        run("rm -rf /data/web_static/releases/{}/web_static".format(file_name))
 
         # Removing the old symbolic link /data/web_static/current
         run("rm -rf /data/web_static/current")
 
         # Creating a new symbolic link /data/web_static/current
         run("ln -s /data/web_static/releases/{}/ /data/web_static/current"
-            .format(filename))
+            .format(file_name))
 
         return True
     except Exception as e:
