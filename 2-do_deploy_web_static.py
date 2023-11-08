@@ -8,12 +8,12 @@ from os import path
 
 
 # Defining the target web server IP addresses
-web_server_1_IP = "54.152.65.207"
-web_server_2_IP = "52.206.72.6"
+web_server_1_IP = '54.152.65.207'
+web_server_2_IP = '52.206.72.6'
 
 # SSH username and path to the private key
-ssh_username = "ubuntu"
-path_to_private_key = "~/.ssh/school"
+ssh_username = 'ubuntu'
+path_to_private_key = '~/.ssh/school'
 
 # Configuring Fabric environment
 env.hosts = [web_server_1_IP, web_server_2_IP]
@@ -24,11 +24,11 @@ env.key_filename = path_to_private_key
 def do_deploy(archive_path):
     """The following function distributes an archive to web servers"""
 
-    # Checking if the specified archive file exists
-    if not path.exists(archive_path):
-        return False
-
     try:
+        # Checking if the specified archive file exists
+        if not (path.exists(archive_path)):
+            return False
+
         # Extracting the filename and path
         tgz_file = archive_path.split("/")[-1]
         print(tgz_file)
