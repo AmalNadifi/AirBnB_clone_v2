@@ -39,4 +39,4 @@ def do_clean(number=0):
         r_archives = run("ls -tr").split()
         r_archives = [arch for arch in r_archives if "web_static_" in arch]
         [r_archives.pop() for i in range(number)]
-        [run("rm -rf ./{}".format(arch) for arch in r_archives]
+        [run("rm -rf ./{}".format(arch)) for arch in r_archives]
