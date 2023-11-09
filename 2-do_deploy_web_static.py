@@ -23,12 +23,10 @@ env.key_filename = path_to_private_key
 
 def do_deploy(archive_path):
     """The following function distributes an archive to web servers"""
-
+    # Checking if the specified archive file exists
+    if not (path.exists(archive_path)):
+        return False
     try:
-        # Checking if the specified archive file exists
-        if not (path.exists(archive_path)):
-            return False
-
         # Extracting the filename and path
         tgz_file = archive_path.split("/")[-1]
         print(tgz_file)
@@ -50,11 +48,12 @@ def do_deploy(archive_path):
         run("sudo rm /tmp/{}".format(tgz_file))
 
         # Moving the contents from the web_static subdir to the release dir
-        run("sudo mv /data/web_static/releases/{}/web_static/*\
-            /data/web_static/releases/{}/".format(file_name, file_name))
+        run("sudo mv /data/web_static/releases/{}/web_static/*"
+            " /data/web_static/releases/{}/".format(file_name, file_name))
 
         # Removing the now empty web_static/ subdir in the release dir
-        run("sudo rm -rf /data/web_static/releases/{}/web_static".format(file_name))
+        run("sudo rm -rf /data/web_static/releases/{}/web_static"
+            .format(file_name))
 
         # Removing the old symbolic link /data/web_static/current
         run("sudo rm -rf /data/web_static/current")
@@ -62,7 +61,6 @@ def do_deploy(archive_path):
         # Creating a new symbolic link /data/web_static/current
         run("sudo ln -s /data/web_static/releases/{}/ /data/web_static/current"
             .format(file_name))
-
         return True
     except Exception as e:
         return False
