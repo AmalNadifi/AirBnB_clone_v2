@@ -40,7 +40,7 @@ def do_deploy(archive_path):
         run("sudo mkdir -p /data/web_static/releases/{}/".format(file_name))
 
         # Uncompressing the archive into the release directory
-        run("sudo tar -zxvf /tmp/{} -C /data/web_static/releases/{}/"
+        run("sudo tar -xzf /tmp/{} -C /data/web_static/releases/{}/"
             .format(tgz_file, file_name))
 
         # Removing the uploaded archive from the /tmp/ directory
