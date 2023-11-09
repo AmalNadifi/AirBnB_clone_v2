@@ -4,7 +4,18 @@ from time import strftime
 from datetime import date
 from os import path
 
-env.hosts = ["54.152.65.207", "52.206.72.6"]
+# Defining the target web server IP addresses
+web_server_1_IP = '54.152.65.207'
+web_server_2_IP = '52.206.72.6'
+
+# SSH username and path to the private key
+ssh_username = 'ubuntu'
+path_to_private_key = '~/.ssh/school'
+
+# Configuring Fabric environment
+env.hosts = [web_server_1_IP, web_server_2_IP]
+env.user = ssh_username
+env.key_filename = path_to_private_key
 
 
 def do_pack():
