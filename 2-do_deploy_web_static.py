@@ -24,11 +24,11 @@ env.key_filename = path_to_private_key
 def do_deploy(archive_path):
     """The following function distributes an archive to web servers"""
 
-    try:
-        # Checking if the specified archive file exists
-        if not (path.exists(archive_path)):
-            return False
+    # Checking if the specified archive file exists
+    if not (path.exists(archive_path)):
+        return False
 
+    try:
         # Extracting the filename and path
         tgz_file = archive_path.split("/")[-1]
         print(tgz_file)
@@ -62,7 +62,6 @@ def do_deploy(archive_path):
         # Creating a new symbolic link /data/web_static/current
         run("ln -s /data/web_static/releases/{}/ /data/web_static/current"
             .format(file_name))
-
         return True
     except Exception as e:
         return False
