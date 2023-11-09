@@ -33,7 +33,7 @@ def do_pack():
 
         return "versions/web_static_{}.tgz".format(timestamp)
 
-    except:
+    except Exception:
         return None
 
 
@@ -77,8 +77,9 @@ def do_deploy(archive_path):
         # Creating a new symbolic link /data/web_static/current
         run("sudo ln -s /data/web_static/releases/{}/ /data/web_static/current"
             .format(file_name))
+        print("New version deployed!")
         return True
-    except:
+    except Exception:
         return False
 
 
