@@ -53,8 +53,8 @@ def do_deploy(archive_path):
         run("sudo rm /tmp/{}".format(tgz_file))
 
         # Moving the contents from the web_static subdir to the release dir
-        run("sudo mv /data/web_static/releases/{}/web_static/*\
-                /data/web_static/releases/{}/".format(file_name, file_name))
+        run("sudo mv /data/web_static/releases/{}/web_static/* \
+/data/web_static/releases/{}/".format(file_name, file_name))
 
         # Removing the now empty web_static/ subdir in the release dir
         run("sudo rm -rf /data/web_static/releases/{}/web_static"
