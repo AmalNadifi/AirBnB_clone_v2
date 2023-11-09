@@ -24,11 +24,11 @@ env.key_filename = path_to_private_key
 def do_deploy(archive_path):
     """The following function distributes an archive to web servers"""
 
-    # Checking if the specified archive file exists
-    if not (path.exists(archive_path)):
-        return False
-
     try:
+        # Checking if the specified archive file exists
+        if not (path.exists(archive_path)):
+            return False
+
         # Extracting the filename and path
         tgz_file = archive_path.split("/")[-1]
         print(tgz_file)
@@ -40,28 +40,29 @@ def do_deploy(archive_path):
         put(archive_path, '/tmp/')
 
         # Creating the release directory
-        run("mkdir -p /data/web_static/releases/{}/".format(file_name))
+        run("sudo mkdir -p /data/web_static/releases/{}/".format(file_name))
 
         # Uncompressing the archive into the release directory
-        run("tar -zxvf /tmp/{} -C /data/web_static/releases/{}/"
+        run("sudo tar -zxvf /tmp/{} -C /data/web_static/releases/{}/"
             .format(tgz_file, file_name))
 
         # Removing the uploaded archive from the /tmp/ directory
-        run("rm /tmp/{}".format(tgz_file))
+        run("sudo rm /tmp/{}".format(tgz_file))
 
         # Moving the contents from the web_static subdir to the release dir
-        run("mv /data/web_static/releases/{}/web_static/*\
+        run("sudo mv /data/web_static/releases/{}/web_static/*\
             /data/web_static/releases/{}/".format(file_name, file_name))
 
         # Removing the now empty web_static/ subdir in the release dir
-        run("rm -rf /data/web_static/releases/{}/web_static".format(file_name))
+        run("sudo rm -rf /data/web_static/releases/{}/web_static".format(file_name))
 
         # Removing the old symbolic link /data/web_static/current
-        run("rm -rf /data/web_static/current")
+        run("sudo rm -rf /data/web_static/current")
 
         # Creating a new symbolic link /data/web_static/current
-        run("ln -s /data/web_static/releases/{}/ /data/web_static/current"
+        run("sudo ln -s /data/web_static/releases/{}/ /data/web_static/current"
             .format(file_name))
+
         return True
     except Exception as e:
         return False
