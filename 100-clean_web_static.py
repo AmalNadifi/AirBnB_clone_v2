@@ -6,12 +6,9 @@ out-of-date archives on web servers
 import os
 from fabric.api import *
 
-# Defining the target web server IP addresses
-web_server_1_IP = "54.152.65.207"
-web_server_2_IP = "52.206.72.6"
 
 # Setting the Fabric environment to the target IPs
-env.hosts = [web_server_1_IP, web_server_2_IP]
+env.hosts = ['54.152.65.207', '52.206.72.6']
 
 
 def do_clean(number=0):
