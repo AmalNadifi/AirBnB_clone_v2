@@ -33,7 +33,7 @@ def do_pack():
 
         return "versions/web_static_{}.tgz".format(timestamp)
 
-    except Exception as e:
+    except:
         return None
 
 
@@ -78,14 +78,14 @@ def do_deploy(archive_path):
         run("sudo ln -s /data/web_static/releases/{}/ /data/web_static/current"
             .format(file_name))
         return True
-    except Exception as e:
+    except:
         return False
 
 
 def deploy():
     """ This function run the function do_pack() and do_deploy() """
 
-    arch_path = do_pack()
-    if arch_path is None:
+    archive_path = do_pack()
+    if archive_path is None:
         return False
-    return do_deploy(arch_path)
+    return do_deploy(archive_path)
