@@ -1,29 +1,62 @@
 #!/usr/bin/python3
+""" generates a .tgz archive
 """
-This module distributes an archive to your web servers,
-using the function do_deploy
-"""
-from fabric.api import put, run, local, env
+from fabric.api import local, env, put, run
+from datetime import datetime
 from os import path
+from fabric.decorators import runs_once
 
 
-# Defining the target web server IP addresses
-web_server_1_IP = '54.152.65.207'
-web_server_2_IP = '52.206.72.6'
+env.hosts = ['54.152.65.207', '52.206.72.6']
 
-# SSH username and path to the private key
-ssh_username = 'ubuntu'
-path_to_private_key = '~/.ssh/school'
+# Set the username
+env.user = "ubuntu"
 
-# Configuring Fabric environment
-env.hosts = [web_server_1_IP, web_server_2_IP]
-env.user = ssh_username
-env.key_filename = path_to_private_key
+# Set private key path
+env.key_filename = "~/.ssh/school"
+
+
+@runs_once
+def do_pack():
+    """ generates a .tgz archive from the contents of
+    the web_static folder of your AirBnB Clone repo
+    """
+
+    local("mkdir -p versions")
+    dformat = "%Y%m%d%H%M%S"
+    archive_path = "versions/web_static_{}.tgz".format(
+            datetime.strftime(datetime.now(), dformat))
+    result = local("sudo tar -cvzf {} web_static".format(archive_path))
+    if result.failed:
+        return None
+    return archive_path
 
 
 def do_deploy(archive_path):
-    """The following function distributes an archive to web servers"""
-    # Checking if the specified archive file exists
+    """distributes an archive to your web servers"""
+
+    try:
+        if not path.exists(archive_path):
+            return False
+
+        dir_path = "/data/web_static/releases/"
+        filename = path.basename(archive_path)
+        file_no_ext, ext = path.splitext(filename)
+        put(archive_path, "/tmp/{}".format(filename))
+        run("sudo rm -rf {}{}".format(dir_path, file_no_ext))
+        run("sudo mkdir -p {}{}".format(dir_path, file_without_ext))
+        run("sudo tar -xzf /tmp/{} -C {}{}".format(filename, dir_path, file_no_ext))
+        run("sudo rm /tmp/{}".format(filename))
+        run("sudo mv {0}{1}/web_static/* {0}{1}/".format(dir_path, file_no_ext))
+        run("sudo rm -rf {}{}/web_static".format(dir_path, file_no_ext))
+        run("sudo rm -rf /data/web_static/current")
+        run("sudo ln -s {}{}/ /data/web_static/current".format(
+            dir_path, file_no_ext))
+        print("New version deployed!")
+        return True
+    except Exception:
+        return False
+    """# Checking if the specified archive file exists
     if not (path.exists(archive_path)):
         return False
     try:
@@ -48,8 +81,8 @@ def do_deploy(archive_path):
         run("sudo rm /tmp/{}".format(tgz_file))
 
         # Moving the contents from the web_static subdir to the release dir
-        run("sudo mv /data/web_static/releases/{}/web_static/*"
-            " /data/web_static/releases/{}/".format(file_name, file_name))
+        run("sudo mv /data/web_static/releases/{}/web_static/*\
+            /data/web_static/releases/{}/".format(file_name, file_name))
 
         # Removing the now empty web_static/ subdir in the release dir
         run("sudo rm -rf /data/web_static/releases/{}/web_static"
@@ -63,4 +96,4 @@ def do_deploy(archive_path):
             .format(file_name))
         return True
     except Exception as e:
-        return False
+        return False"""
