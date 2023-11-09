@@ -7,8 +7,8 @@ import os
 from fabric.api import *
 
 # Defining the target web server IP addresses
-web_server_1_IP = '54.152.65.207'
-web_server_2_IP = '52.206.72.6'
+web_server_1_IP = "54.152.65.207"
+web_server_2_IP = "52.206.72.6"
 
 # Setting the Fabric environment to the target IPs
 env.hosts = [web_server_1_IP, web_server_2_IP]
@@ -30,7 +30,7 @@ def do_clean(number=0):
     number = 1 if int(number) == 0 else int(number)
     # Deleting local out-of-date archives
     local_archives = sorted(os.listdir("versions"))
-    [local_archives.pop() for i in range(number)]
+    [local_archives.pop() for x in range(number)]
     with lcd("versions"):
         [local("rm ./{}".format(arch)) for arch in local_archives]
 
@@ -38,5 +38,5 @@ def do_clean(number=0):
     with cd("/data/web_static/releases"):
         r_archives = run("ls -tr").split()
         r_archives = [arch for arch in r_archives if "web_static_" in arch]
-        [r_archives.pop() for i in range(number)]
+        [r_archives.pop() for x in range(number)]
         [run("rm -rf ./{}".format(arch)) for arch in r_archives]
