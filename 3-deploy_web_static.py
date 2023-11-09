@@ -85,7 +85,7 @@ def do_deploy(archive_path):
 def deploy():
     """ This function run the function do_pack() and do_deploy() """
 
-    path = do_pack()
-    if not path:
+    arch_path = do_pack()
+    if arch_path is None:
         return False
-    return do_deploy(path)
+    return do_deploy(arch_path)
