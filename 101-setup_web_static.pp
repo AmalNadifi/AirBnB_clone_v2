@@ -1,4 +1,4 @@
-# 101-setup_web_static.pp
+# The following puppet script is to setup web servers for web_static
 
 # Ensuring Nginx is installed
 package { 'nginx':
