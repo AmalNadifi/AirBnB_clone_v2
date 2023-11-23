@@ -5,10 +5,9 @@ The web application must be listening on 0.0.0.0, port 5000
 """
 
 from flask import Flask, render_template
-from markupsafe import escape
 
 # Creating a Flask application instance
-app = Flask("__name__")
+app = Flask(__name__)
 
 # Defining a route for the ("/") and disable strict slashes for flexibility
 @app.route('/', strict_slashes=False)
