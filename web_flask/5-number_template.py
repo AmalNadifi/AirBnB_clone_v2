@@ -47,7 +47,7 @@ def number_route(n):
 def rendering_number_template(n):
     # Rendering the template and passing the number as a variable
     if isinstance(n, int):
-    return render_template('5-number.html', n=n)
+        return render_template('5-number.html', n=n)
 
 # Running the Flask application if this script is executed directly
 if __name__ == "__main__":
