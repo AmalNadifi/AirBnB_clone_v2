@@ -36,7 +36,20 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        class_name = obj.to_dict().get('__class__')
+        obj_id = obj.to_dict().get('id')
+
+        if class_name is None:
+            print(f"Error: '__class__' is None for object {obj}")
+            return
+
+        if obj_id is None:
+            print(f"Error: 'id' is None for object {obj}")
+            return
+
+        key = f"{class_name}.{obj_id}"
+        self.all().update({key: obj})
+       # self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
         """Saves storage dictionary to file"""

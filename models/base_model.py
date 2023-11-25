@@ -2,7 +2,7 @@
 """ThIs module defines a base class for all models in our hbnb clone"""
 from sqlalchemy.ext.declarative import declarative_base
 import models
-from uuid import uuid4
+import uuid
 from datetime import datetime
 from sqlalchemy import Column
 from sqlalchemy import DateTime
@@ -43,6 +43,13 @@ class BaseModel:
                     # Setting the attributes based on key-value pairs in kwargs
                     setattr(self, key, value)
 
+            # If 'created_at' or 'updated_at' is not present in kwargs,
+            # Set them to current time
+            if 'created_at' not in kwargs:
+                self.created_at = datetime.now()
+            if 'updated_at' not in kwargs:
+                self.updated_at = datetime.now()
+
     def __str__(self):
         """This method returns a string representation of the instance"""
         # Getting the class name as a string
@@ -70,6 +77,7 @@ class BaseModel:
         # Add the class name to the dictionary
         d["__class__"] = str(type(self).__name__)
         # Formatting the 'created_at''updated_at' timestamps as ISO strings
+        
         d['created_at'] = self.created_at.isoformat()
         d['updated_at'] = self.updated_at.isoformat()
         # Removing SQLAlchemy internal state attribute
