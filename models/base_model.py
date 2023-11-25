@@ -16,7 +16,7 @@ class BaseModel:
     """This class is a base class for all the hbnb models"""
 
     # Unique ID for the model, 60 characters, primary key, cannot be null
-    id = Column(String(60), primary_key=True, nullable=False)
+    id = Column(String(60), primary_key=True, nullable=False, unique=True)
 
     # Timestamp for when the instance was created, cannot be null
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
@@ -63,13 +63,16 @@ class BaseModel:
         """This method updates 'updated_at' with the current time
         and saves the instance
         """
-        from models.__init__ import storage
+        from models import storage
         # Updating the 'updated_at' timestamp to the current time
         self.updated_at = datetime.now()
+        # Updating the 'id' if it's None
+        if not self.id:
+            self.id = str(uuid4())
         # Adding the new instance to the storage
-        models.storage.new(self)
+        storage.new(self)
         # Saving the instance using the storage
-        models.storage.save()
+        storage.save()
 
     def to_dict(self):
         """This method converts the instance into a dictionary format"""
