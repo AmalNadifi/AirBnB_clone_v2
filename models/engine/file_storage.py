@@ -49,7 +49,6 @@ class FileStorage:
 
         key = f"{class_name}.{obj_id}"
         self.all().update({key: obj})
-       # self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
         """Saves storage dictionary to file"""
