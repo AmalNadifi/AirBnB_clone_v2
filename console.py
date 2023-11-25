@@ -159,7 +159,7 @@ class HBNBCommand(cmd.Cmd):
             param_dict[key] = value
 
         # Check if "name" is part of the parameters,
-        #and set it to the name attribute
+        # and set it to the name attribute
 
         if 'name' in param_dict:
             name = param_dict['name']
