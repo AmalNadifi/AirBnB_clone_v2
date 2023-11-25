@@ -8,7 +8,8 @@ from models.state import State
 # Creating a Flask web application instance
 app = Flask(__name__)
 
-# Defining a method to be executed when the application context is being torn down
+# Defining a method to be executed,
+# when the application context is being torn down
 
 
 @app.teardown_appcontext
