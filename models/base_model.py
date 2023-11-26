@@ -2,7 +2,7 @@
 """ThIs module defines a base class for all models in our hbnb clone"""
 from sqlalchemy.ext.declarative import declarative_base
 import models
-from uuid import uuid4
+import uuid
 from datetime import datetime
 from sqlalchemy import Column
 from sqlalchemy import DateTime
@@ -28,7 +28,7 @@ class BaseModel:
         """ This method instantiates a new model"""
         if not kwargs:
             # Generating a unique ID
-            self.id = str(uuid4())
+            self.id = str(uuid.uuid4())
             # Setting the 'created_at','updated_at' timestamps to current time
             self.created_at = self.updated_at = datetime.now()
         else:
@@ -49,6 +49,8 @@ class BaseModel:
                 self.created_at = datetime.now()
             if 'updated_at' not in kwargs:
                 self.updated_at = datetime.now()
+            if "id" not in kwargs:
+                self.id = str(uuid.uuid4())
 
     def __str__(self):
         """This method returns a string representation of the instance"""
@@ -68,7 +70,7 @@ class BaseModel:
         self.updated_at = datetime.now()
         # Updating the 'id' if it's None
         if not self.id:
-            self.id = str(uuid4())
+            self.id = str(uuid.uuid4())
         # Adding the new instance to the storage
         storage.new(self)
         # Saving the instance using the storage
