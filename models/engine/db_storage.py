@@ -115,12 +115,11 @@ class DBStorage:
             Base.metadata.create_all(self.__engine)
 
             # Use existing scoped session class &assign a new session to it
-            self.__session = scoped_session(sessionmaker(bind=self.__engine,
-                                                      expire_on_commit=False))
+            self.__session = scoped_session(
+                    sessionmaker(bind=self.__engine, expire_on_commit=False))
         except Exception as e:
             print(f"Error during reload: {e}")
             raise  # Reraise the exception to see the full traceback
-
 
     def get(self, cls, id):
         """
