@@ -12,6 +12,7 @@ app = Flask(__name__)
 # Defining a method to be executed,
 # when the application context is being torn down
 
+
 @app.teardown_appcontext
 def close(self):
     """Closing the session"""
