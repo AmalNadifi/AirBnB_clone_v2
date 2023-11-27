@@ -104,11 +104,23 @@ class DBStorage:
 
     def reload(self):
         """
-        This method creates tables and a new database session"""
-        Base.metadata.create_all(self.__engine)
-        New_session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(New_session)
-        self.__session = Session()
+        This method creates tables and a new database session
+        """
+        try:
+            # Clear the existing session, if any
+            if self.__session:
+                self.__session.close()
+
+            # Create tables
+            Base.metadata.create_all(self.__engine)
+
+            # Use existing scoped session class &assign a new session to it
+            self.__session = scoped_session(sessionmaker(bind=self.__engine,
+                                                      expire_on_commit=False))
+        except Exception as e:
+            print(f"Error during reload: {e}")
+            raise  # Reraise the exception to see the full traceback
+
 
     def get(self, cls, id):
         """
